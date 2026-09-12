@@ -1,0 +1,16 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {Duel} from '../app/duel.ts';
+globalThis.window={addEventListener(){},removeEventListener(){}};
+globalThis.document={hidden:false,addEventListener(){},removeEventListener(){},querySelector(){return {getBoundingClientRect(){return {left:400,top:300,width:190,height:190}}}}};
+globalThis.requestAnimationFrame=()=>1;globalThis.cancelAnimationFrame=()=>{};
+function game(){return new Duel({target:()=>[.5,.48],host:{getBoundingClientRect:()=>({left:0,top:0,width:1000,height:800})},update(){}},()=>{})}
+function key(d,k,up=false){d[up?'up':'down']({key:k,preventDefault(){},repeat:false})}
+function advance(d,seconds){let now=d.last;for(let i=0;i<seconds*50;i++){now+=20;d.loop(now)}}
+test('sequence requires a second key press, then release commits and consumes one round',()=>{const d=game();d.start('duel');key(d,'w');assert.equal(d.p.action,null);key(d,'w',true);key(d,'d');assert.equal(d.p.action,'shoot');assert.equal(d.p.ammo,6);d.t=.6;d.pointer=[.5,.48];key(d,'d',true);assert.equal(d.p.ammo,5);assert.equal(d.p.committed,true);key(d,'d',true);assert.equal(d.p.ammo,5)});
+test('empty cylinder rejects attacks without locking out defensive inputs',()=>{const d=game();d.start('duel');d.p.ammo=0;key(d,'w');key(d,'w',true);key(d,'d');assert.equal(d.held,'');key(d,'d',true);key(d,'s');key(d,'s',true);key(d,'s');assert.equal(d.p.action,'brace')});
+test('clean tracing scores above off-path jitter without zeroing the base floor',()=>{const d=game();d.start('duel');d.p.action='shoot';d.p.started=0;d.t=.6;d.pointer=[.5,.48];d.samples=[{t:0,x:.72,y:.76},{t:.15,x:.67,y:.68},{t:.3,x:.62,y:.60},{t:.45,x:.56,y:.54},{t:.59,x:.5,y:.48}];const clean=d.grade();d.pointer=[.1,.9];d.samples=[{t:0,x:.1,y:.9},{t:.1,x:.9,y:.1},{t:.2,x:.1,y:.9}];assert.ok(clean>d.grade());assert.ok(d.grade()>=.2)});
+test('brace protects only in its window, never negates all damage',()=>{function damage(age){const d=game();d.start('duel');d.t=1;d.e.action='shoot';d.e.started=.3;d.p.action='brace';d.p.started=1-age;d.p.quality=.8;d.rand=()=>0;d.commit(d.e,d.p,'opponent',.8);return 100-d.p.hp}const protectedDamage=damage(.5);assert.ok(protectedDamage>0);assert.ok(protectedDamage<damage(.1));assert.ok(protectedDamage<damage(1.5))});
+test('five exchanges enter restock; six physical loads fill the cylinder',()=>{const d=game();d.start('duel');d.rand=()=>.99;advance(d,15.3);assert.equal(d.phase,'reload');assert.equal(d.p.ammo,0);for(let i=0;i<6;i++){d.pointer=[(400+190*(.5+.35*Math.sin(i*Math.PI/3)))/1000,(300+190*(.5-.35*Math.cos(i*Math.PI/3)))/800];d.t+=.11;d.load()}assert.equal(d.p.ammo,6);advance(d,3);assert.equal(d.round,6);assert.equal(d.phase,'fight')});
+test('ten exchanges lead to exactly one final draw and a terminal replay',()=>{const d=game();d.start('duel');d.rand=()=>.99;advance(d,40);assert.equal(d.round,11);assert.ok(['death','replay','end'].includes(d.phase));assert.equal(d.outcome,'Neither hand prevailed.');assert.ok(d.frames.length>0)});
+test('pause freezes combat and clears held preparation',()=>{const d=game();d.start('duel');key(d,'w');key(d,'w',true);key(d,'w');d.pause(true);const time=d.t;advance(d,2);assert.equal(d.t,time);assert.equal(d.held,'');assert.equal(d.p.action,null)});

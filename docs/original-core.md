@@ -1,0 +1,284 @@
+1. **Core concept** 
+   -  Minimalist first-person Western duel. 
+   -  Two duelists remain mostly pinned to their positions, with limited leaning/body movement. 
+   -  Fast-paced, pseudo-turn-based combat where both players act within overlapping real-time windows. 
+   -  Maximum **10 exchanges**. 
+   -  Sunset continuously falls throughout the duel until near-darkness on turn 10. 
+   -  Main skill stack: **read opponent → enter action → physically execute → time commitment**. 
+   -  Counters create advantages, **never guaranteed wins**. Superior timing/execution can reverse a bad matchup. 
+2. **Perspective / presentation** 
+   -  Alive: **first-person**. 
+   -  Opponent stands relatively far away with lots of negative space. 
+   -  Revolver rests low/right during neutral state. 
+   -  No permanent crosshair. 
+   -  Death: camera exits into **third-person**, shows the fall, then replay. 
+   -  Clean polygonal Western style: 
+     -  faceted low/mid-poly geometry; 
+     -  realistic-ish proportions; 
+     -  matte painted materials; 
+     -  readable silhouettes; 
+     -  sparse scenery; 
+     -  strong sunset rim lighting; 
+     -  orange/pink → violet/blue/black progression. 
+   -  Buildings, mesas, windmills, etc. frame the duel rather than dominate it. 
+3. **HUD** 
+   -  Your HP visible only to you. 
+   -  Enemy HP completely hidden. 
+   -  Ammo visible. 
+   -  Four understated action candidates near bottom of screen. 
+   -  No damage numbers. 
+   -  No giant action cards. 
+   -  No permanent action labels over opponent. 
+   -  White execution guides appear **only during actions**. 
+4. **Action input** 
+   -  No clicking to select actions. 
+   -  Actions use deliberately similar **keyboard sequences**, making mistakes possible under pressure. 
+   -  Provisional layout: 
+     - `W → W` = **Aim** 
+     - `W → D` = **Shoot** 
+     - `S → S` = **Brace** 
+     - `S → A` = **Trick** 
+   -  Current partial input highlights the closest possible actions: 
+     -  nothing → all dim; 
+     - `W` → Aim + Shoot partially highlight; 
+     - `W → D` → Shoot dominates, Aim fades. 
+   -  Final key is **held** while physically executing with the mouse. 
+   -  Release final key = **commit action**. 
+   -  Faster inputs conceal intent better but are easier to mess up. 
+5. **Physical execution scoring** 
+   -  Every action grades: 
+     -  input correctness; 
+     -  mouse-path adherence; 
+     -  smoothness; 
+     -  acceleration/deceleration control; 
+     -  final alignment; 
+     -  stability; 
+     -  timing; 
+     -  release timing. 
+   -  There is always some **base effectiveness/accuracy**, so imperfect players remain functional. 
+   -  Better manual execution raises the ceiling rather than acting as a binary pass/fail. 
+   -  Possible qualitative grades: Rough → Clean → Sharp → Perfect. 
+6. **Aim** 
+   -  Hold action and physically move aim onto opponent. 
+   -  Temporary white crosshair/target outline appears. 
+   -  Actual aim point must be moved toward the guide. 
+   -  Holding longer: 
+     -  improves accuracy; 
+     -  increases damage; 
+     -  may improve penetration/critical potential; 
+     -  tightens the guide; 
+     -  exposes you longer to interruption. 
+   -  Player chooses when to release and fire. 
+   -  Core mindgame: **how long can you greed for damage before they interrupt you?** 
+7. **Shoot / Quick Draw** 
+   -  Fast offensive/disruption action. 
+   -  White path appears from low/holstered gun position toward firing position. 
+   -  Player physically traces the draw with the mouse. 
+   -  Fast clean draw = strong interruption potential. 
+   -  Messy draw = poor accuracy, weak hit, miss, or slower recovery. 
+   -  Naturally punishes someone patiently charging Aim. 
+   -  But an Aimer can release early, move, or simply outperform the Draw timing. 
+8. **Brace** 
+   -  Defensive/counter action. 
+   -  White angular **stability region** appears. 
+   -  Player moves into/maintains the ideal region. 
+   -  Good Brace: 
+     -  reduces disruption/damage; 
+     -  stabilizes weapon/body; 
+     -  creates counter opportunity. 
+   -  Can lose to: 
+     -  very early attack before formation; 
+     -  deliberately delayed attack; 
+     -  Trick. 
+   -  It is a timing window, not “press shield to negate bullet.” 
+9. **Trick** 
+   -  Feint/deception action. 
+   -  Begins with a physical path resembling another action. 
+   -  Guide then branches/reverses partway through. 
+   -  Player must redirect smoothly. 
+   -  Designed to punish defensive/patient reads. 
+   -  Can imitate Aim, Draw, or defensive preparation. 
+   -  Vulnerable to someone who ignores the bait and attacks immediately. 
+10. **Counter philosophy** 
+    -  Action selection modifies **windows and conditions**, not outcomes. 
+    -  Example: 
+      -  Shoot > Aim naturally because it resolves faster. 
+      -  But Aim can release early and beat a slow/messy Shoot. 
+      -  Brace > Shoot by creating a defensive window. 
+      -  But Shoot can land before or after that window. 
+      -  Trick > Brace by baiting commitment. 
+      -  But Brace can be cancelled/read, or Trick can simply get shot. 
+    -  Desired recurring feeling: 
+      -  “I chose badly.” 
+      -  “I can still save this.” 
+      -  “I saved it.” 
+      -  “Now I can punish them.” 
+11. **Opponent/player tells** 
+    -  Both players see the other character’s physical preparation. 
+    -  No explicit “ENEMY IS AIMING” indicator. 
+    -  Actions share deliberately ambiguous early animation. 
+    -  Tells become progressively clearer as commitment increases. 
+    -  Examples: 
+      -  Aim: shoulders square, gun gradually rises, head settles. 
+      -  Shoot: hand tension, elbow shift, wrist/coat movement near holster. 
+      -  Brace: lower center of gravity, torso rotation. 
+      -  Trick: initially mimics another tell before diverging. 
+    -  Better/faster execution gives opponents less time to identify the tell. 
+12. **Health tells** 
+    -  Opponent HP inferred physically. 
+    -  Healthy: 
+      -  relaxed breathing; 
+      -  steady stance; 
+      -  clean recovery. 
+    -  Hurt: 
+      -  more visible breathing; 
+      -  slight weight shifting; 
+      -  subtle wound guarding; 
+      -  slower neutral recovery. 
+    -  Near death: 
+      -  heavier breathing; 
+      -  uneven posture; 
+      -  hand tremor; 
+      -  knee/shoulder instability; 
+      -  difficulty recovering. 
+    -  Same tells are visible on **your character to the opponent**. 
+    -  Exact HP remains private. 
+13. **Movement** 
+    -  No free FPS locomotion. 
+    -  Player remains anchored to their duel position. 
+    -  Limited: 
+      -  lean; 
+      -  crouch; 
+      -  torso twist; 
+      -  head movement; 
+      -  small floor-radius shifts. 
+    -  Movement can disrupt opponent aim. 
+    -  Uses inertia/range limits so optimal play does not become furious ADAD mosquito behavior. 
+14. **Exchange rhythm** 
+    -  Roughly **1.5–3 seconds per exchange**. 
+    -  Minimal/no hard pause between turns. 
+    -  Flow: 
+      -  tiny neutral beat; 
+      -  rapid input; 
+      -  preparation tell; 
+      -  physical mouse execution; 
+      -  commit; 
+      -  impact; 
+      -  tiny recovery; 
+      -  next input immediately. 
+    -  Both players’ phases can overlap. 
+    -  A fast player may already begin acting while the opponent is still resolving their choice. 
+15. **Turn structure** 
+    -  Turns 1–4: probing/read-building phase. 
+    -  Turn 5: first major pressure peak. 
+    -  After turn 5: **restock/reload phase**. 
+    -  Turns 6–8: higher injury + lower-light pressure. 
+    -  Turn 9: near-dark final preparation. 
+    -  Turn 10: final exchange. 
+    -  If somehow unresolved after 10: 
+      -  sudden-death pure draw is possible; 
+      -  one decisive final execution rather than extending forever. 
+16. **Restock phase** 
+    -  Brief, around 3 seconds. 
+    -  Physical rather than conventional menu. 
+    -  Reload cylinder with mouse/keyboard interaction. 
+    -  Possible limited resource/modifier decision. 
+    -  Execution quality can determine reload speed or chamber completeness. 
+    -  Both duelists remain visible while reloading. 
+    -  Therefore reload itself exposes: 
+      -  shaking; 
+      -  injury; 
+      -  speed; 
+      -  confidence; 
+      -  possibly how many rounds were loaded. 
+    -  Functions as the breath between halves. 
+17. **Sunset as match clock** 
+    -  No need for obnoxious TURN 7/10 banner. 
+    -  Environment communicates progression. 
+    -  Early turns: bright orange sun. 
+    -  Turn 5: sun touches horizon. 
+    -  Restock: brief golden stillness. 
+    -  Turns 6–8: sun sinks, cool shadows increase. 
+    -  Turn 9: thin afterglow. 
+    -  Turn 10: blue-violet darkness. 
+    -  Later darkness changes gameplay: 
+      -  detailed tells become harder; 
+      -  silhouettes become more important; 
+      -  audio becomes more useful; 
+      -  muzzle flashes become visually extreme. 
+    -  Never become literally unreadable. 
+18. **Escalating game feel** 
+    -  Early duel feels restrained. 
+    -  As match progresses: 
+      -  music layers intensify; 
+      -  wind/dust increase; 
+      -  breathing becomes more prominent; 
+      -  animations show injuries; 
+      -  recovery becomes messier; 
+      -  lighting becomes darker; 
+      -  muzzle flashes become more dramatic. 
+    -  Rewards for clean execution: 
+      -  sharper sounds; 
+      -  controlled camera response; 
+      -  brief hit-stop; 
+      -  stronger impact; 
+      -  subtle visual escalation. 
+    -  Avoid turning it into neon dopamine soup. 
+19. **Death** 
+    -  Lethal hit occurs in first person. 
+    -  Very brief impact/freeze/audio contraction. 
+    -  Camera separates from player into third person. 
+    -  Player watches their character fall. 
+    -  Immediately transitions to replay rather than a generic GAME OVER panel. 
+20. **Replay** 
+    -  Driven by recorded gameplay events. 
+    -  Example events: 
+      -  input; 
+      -  candidate change; 
+      -  action start; 
+      -  commit; 
+      -  mouse path; 
+      -  interrupt; 
+      -  shot; 
+      -  hit; 
+      -  damage; 
+      -  death. 
+    -  Can show timestamps such as: 
+      - `01.426 Opponent began Aim` 
+      - `01.611 You began Shoot` 
+      - `01.744 Draw path deviated` 
+      - `01.903 Opponent released early` 
+      - `01.971 Lethal hit` 
+    -  Replay may overlay: 
+      -  both inputs; 
+      -  paths; 
+      -  accuracy guides; 
+      -  counter windows; 
+      -  timing. 
+    -  Purpose: player should understand **why they died**. 
+21. **Opponent AI** 
+    -  Initially rule-based, not LLM-powered cowboy philosophy. 
+    -  Tracks: 
+      -  repeated action choices; 
+      -  timing habits; 
+      -  player hesitation; 
+      -  recent counters; 
+      -  visible commitment. 
+    -  Can deliberately: 
+      -  fire early; 
+      -  wait; 
+      -  bait; 
+      -  interrupt; 
+      -  punish repeated timing. 
+    -  Should expose the same tells and obey the same timing logic as the player. 
+22. **Art direction** 
+    -  “Clean polygonal Western.” 
+    -  Broad forms over detailed texture. 
+    -  Strong readable poses. 
+    -  Opponent roughly small enough to emphasize duel distance. 
+    -  Influences: 
+      -  Sable-like geometric economy; 
+      -  The Long Dark-like matte/stylized material sensibility; 
+      -  Call of Juarez-style first-person gun physicality; 
+      -  classic Western duel framing. 
+    -  Original identity comes from combining this with the input/tell system.
