@@ -1,0 +1,64 @@
+name: Ten Till Dark CI
+
+on:
+  push:
+    branches:
+      - "codex/**"
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ten-till-dark-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Restore build script permissions
+        run: chmod +x scripts/*.sh
+
+      - name: Production build and duel unit tests
+        run: |
+          npm run build
+          node --test tests/duel.test.mjs
+
+      - name: Install browser runner
+        run: |
+          npm install --no-save --package-lock=false playwright@1.55.0
+          npx playwright install --with-deps chromium
+
+      - name: Start local game
+        run: |
+          npm run dev -- --host 127.0.0.1 > /tmp/ten-till-dark.log 2>&1 &
+          echo $! > /tmp/ten-till-dark.pid
+          curl --fail --retry 45 --retry-delay 2 --retry-all-errors http://127.0.0.1:5173/ > /dev/null
+
+      - name: Chromium input and WebGL smoke test
+        run: node scripts/browser-smoke.mjs
+
+      - name: Collect server log
+        if: always()
+        run: |
+          mkdir -p artifacts
+          if [ -f /tmp/ten-till-dark.log ]; then cp /tmp/ten-till-dark.log artifacts/server.log; fi
+
+      - name: Preserve rendered evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mist-hold-browser-evidence
+          path: artifacts/
+          if-no-files-found: warn
