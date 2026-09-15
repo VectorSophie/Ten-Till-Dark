@@ -30,8 +30,10 @@ jobs:
       - name: Restore build script permissions
         run: chmod +x scripts/*.sh
 
-      - name: Build and unit tests
-        run: npm test
+      - name: Production build and duel unit tests
+        run: |
+          npm run build
+          node --test tests/duel.test.mjs
 
       - name: Install browser runner
         run: |
