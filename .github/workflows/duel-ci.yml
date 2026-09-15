@@ -27,6 +27,9 @@ jobs:
 
       - run: npm ci
 
+      - name: Restore build script permissions
+        run: chmod +x scripts/*.sh
+
       - name: Build and unit tests
         run: npm test
 
@@ -44,12 +47,16 @@ jobs:
       - name: Chromium input and WebGL smoke test
         run: node scripts/browser-smoke.mjs
 
+      - name: Collect server log
+        if: always()
+        run: |
+          mkdir -p artifacts
+          if [ -f /tmp/ten-till-dark.log ]; then cp /tmp/ten-till-dark.log artifacts/server.log; fi
+
       - name: Preserve rendered evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: mist-hold-browser-evidence
-          path: |
-            artifacts/
-            /tmp/ten-till-dark.log
+          path: artifacts/
           if-no-files-found: warn
